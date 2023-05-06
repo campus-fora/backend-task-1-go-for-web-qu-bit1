@@ -12,17 +12,24 @@ import (
 func main() {
 
 	// creating a database connection
+	// Conn function made in store.go
 	db := store.Conn()
 
 	r := gin.Default()
+
+	// making a get request
 	r.GET("/fetch", func(c *gin.Context) {
+		// getAll function made in store.go
 		finalData := store.GetAll(db)
 		c.JSON(200, finalData)
 	})
 
+	// making a post request
 	r.POST("/add", func(c *gin.Context) {
 
 		id := c.PostForm("id")
+		// post form returns a string value
+		// so we convert string to int using parseint
 		i, err := strconv.ParseInt(id, 10, 64)
 		if err != nil {
 			panic(err)
@@ -37,6 +44,7 @@ func main() {
 
 	})
 
+	// making a delete request
 	r.DELETE("/delete", func(c *gin.Context) {
 		id := c.PostForm("id")
 		i, err := strconv.ParseInt(id, 10, 64)
