@@ -26,7 +26,12 @@ func GetAll(db *sql.DB) []Posts {
 	if err != nil {
 		panic(err.Error())
 	}
-	defer res.Close()
+	defer func(res *sql.Rows) {
+		err := res.Close()
+		if err != nil {
+
+		}
+	}(res)
 
 	//making a variable data of type posts can also be made inside the loop
 	// sole purpose of data variable is as a temporary variable to append into the final array

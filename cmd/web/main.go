@@ -3,6 +3,7 @@ package main
 import (
 	"campus_fora_week1/pkg/store"
 	"fmt"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	"log"
@@ -16,6 +17,11 @@ func main() {
 	db := store.Conn()
 
 	r := gin.Default()
+
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"http://localhost:3000"}
+	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE"}
+	r.Use(cors.New(config))
 
 	// making a get request
 	r.GET("/fetch", func(c *gin.Context) {
@@ -57,6 +63,9 @@ func main() {
 		}
 
 	})
-	r.Run()
+	err := r.Run()
+	if err != nil {
+		return
+	}
 
 }
